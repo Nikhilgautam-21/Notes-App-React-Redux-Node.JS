@@ -1,0 +1,21 @@
+
+.App-header {
+  background-color: #222;
+  height: 50px;
+  color: white;
+  text-align: center;
+  top: 1;
+  padding:10px;
+}
+
+
+@font-face {
+    font-family: Kaushan;
+    src: url('../assets/fonts/KaushanScript-Regular.otf');
+}
+
+.App-name{
+  font-family: Kaushan;
+  font-size: 30px;
+  margin-top: 2px;
+}
