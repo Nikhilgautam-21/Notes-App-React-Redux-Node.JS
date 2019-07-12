@@ -16,7 +16,6 @@ class ShowToDos extends Component {
   }
 
   componentWillReceiveProps(nextprops){
-    console.log(nextprops,"will")
     this.setState({todos:nextprops.todos})
   }
 
@@ -25,7 +24,6 @@ class ShowToDos extends Component {
   }
 
   render() {
-    console.log(this.state,"show")
     return (
         <div className="show-todos-body">
            <Grid container direction="row" alignItems="center" justify="center">
@@ -46,8 +44,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
   return {
-    todos: state.todos
+    todos: state.todoReducers.todos
   }
 }
-
 export default connect(mapStateToProps,mapDispatchToProps)(ShowToDos);

@@ -8,6 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import '../CSS/todo.css';
 import $ from 'jquery'
+import { deleteToDo } from '../Actions/actionCreators';
+import {connect} from 'react-redux';
 
 class ToDo extends Component {
     constructor(props){
@@ -33,22 +35,22 @@ class ToDo extends Component {
         }
     }
 
-    handleDeleteToDo(){
-
+    handleDeleteToDo(id){
+        this.props.deleteToDo(id);
     }
 
     render() {
 
     var randomColor = "#"+((1<<24)*Math.random()|0).toString(16);
-    console.log(this.props.item.description.toString,"f")
+
     return (
       <div className="todo-body">
         <Card className={this.props.item.completed ?"todo todo-done":"todo"}>
         <div className="todo-strip" style={{height:"5px",backgroundColor: randomColor}}></div>
             <CardContent>
                 <h4 className="todo-head">{this.props.item.name}
-                <DeleteIcon className="dlt-icon" style={{float:"right"}} fontSize="small" onClick={this.handleDeleteToDo}></DeleteIcon> 
-                <EditIcon   className="edit-icon" style={{float:"right"}} fontSize="small"onClick={this.handleEditToDo}></EditIcon>
+                <DeleteIcon className="dlt-icon hide" style={{float:"right"}} fontSize="small" onClick={() => this.handleDeleteToDo(this.props.item._id)}></DeleteIcon> 
+                <EditIcon   className="edit-icon hide" style={{float:"right"}} fontSize="small" onClick={() =>this.handleEditToDo}></EditIcon>
                 </h4> 
                 <Typography paragraph className="todo-main">
                    {this.props.item.description}...
@@ -58,7 +60,8 @@ class ToDo extends Component {
                 </div>
                 
                 <Button className="btn-todo-done" size= "small" variant= "outlined" color="secondary" onClick={this.handleTodoDone}>
-                   {this.state.doneStatus ? "Mark as not Done":"Mark as Done"} 
+
+                   {this.state.completed ? "Mark as not Done":"Mark as Done"} 
                 </Button>
 
             </CardContent>
@@ -70,21 +73,25 @@ class ToDo extends Component {
   }
 
   componentDidMount(){
-    //   $(document).ready(function(){
-    //       $('.todo').hover(function(){
-    //           $(this).find('.dlt-icon').css('display',"")
-    //           $(this).find('.edit-icon').css('display',"")
-    //           $(this).find('.btn-todo-done').css('display',"");
-    //       })
+      $(document).ready(function(){
+          $('.todo').hover(function(){
+              $(this).find('.dlt-icon').removeClass("hide")
+              $(this).find('.edit-icon').removeClass("hide")
+          })
 
-    //       $('.todo').mouseleave(function(){
-    //         $(this).find('.edit-icon').css('display',"none")
-    //         $(this).find('.dlt-icon').css('display',"none")
-    //         $(this).find('.btn-todo-done').css('display',"none")
-    //       })
+          $('.todo').mouseleave(function(){
+            $(this).find('.edit-icon').addClass('hide')
+            $(this).find('.dlt-icon').addClass('hide')
+          })
 
-    //   })
+      })
   }
 }
 
-export default ToDo;
+const mapDispatchToProps = (dispatch) =>{
+    return {
+        deleteToDo : (id) => dispatch(deleteToDo(id))
+    }
+}
+
+export default connect(null,mapDispatchToProps)(ToDo);

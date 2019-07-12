@@ -41,6 +41,7 @@ class AddModal extends Component {
     }
     this.props.addToDo(todo);
     this.setState({name:'',description:'',targetdate: new Date('2014-08-18T21:11:54')})
+    this.handleClose();
   } 
 
   render() {

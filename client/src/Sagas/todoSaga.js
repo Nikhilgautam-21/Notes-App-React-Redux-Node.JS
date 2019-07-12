@@ -1,6 +1,6 @@
-import {put, takeLatest, call, all} from 'redux-saga/effects';
+import {put, takeLatest, call, all, takeEvery} from 'redux-saga/effects';
 import axios from 'axios';
-import {ADD_TODO, GET_TODO, ADD_TODO_SUCCESS,GET_TODO_SUCCESS} from '../Actions/actionTypes';
+import {ADD_TODO, GET_TODO, ADD_TODO_SUCCESS,GET_TODO_SUCCESS, DELETE_TODO_SUCCESS,DELETE_TODO} from '../Actions/actionTypes';
 
 const BaseUrl = "http://localhost:8002/api";
 
@@ -20,13 +20,26 @@ export function* addTodoSaga(action){
         yield put({type:ADD_TODO_SUCCESS, payload:response.data})
     }
     catch(e){
+        console.log(e)
+    }
+}
 
+export function* deleteSaga(action){
+    try{
+        console.log(`${BaseUrl}/delete/${action.payload}`)
+        const response = yield call(axios.delete,(`${BaseUrl}/delete/${action.payload}`))
+        yield put({type:DELETE_TODO_SUCCESS, payload:response.data})
+        console.log(response,"saga")
+    }
+    catch(e){
+        console.log(e)
     }
 }
 
 export function* watchAll(){
     yield all([
         takeLatest(GET_TODO,getTodoSaga),
+        takeEvery(DELETE_TODO,deleteSaga),
         takeLatest(ADD_TODO,addTodoSaga)
     ]);
-}
+}       
