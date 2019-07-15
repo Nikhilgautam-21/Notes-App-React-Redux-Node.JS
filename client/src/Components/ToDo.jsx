@@ -10,15 +10,18 @@ import '../CSS/todo.css';
 import $ from 'jquery'
 import { deleteToDo } from '../Actions/actionCreators';
 import {connect} from 'react-redux';
+import AddModal from './AddModal';
 
 class ToDo extends Component {
     constructor(props){
         super(props);
         this.state ={
-            completed : this.props.item.completed
+            completed : this.props.item.completed,
+            showModal : false
         }
         this.handleTodoDone = this.handleTodoDone.bind(this);
         this.handleDeleteToDo = this.handleDeleteToDo.bind(this);
+        this.handleEditToDo = this.handleEditToDo.bind(this)
     }
   
     handleTodoDone(event){
@@ -39,6 +42,11 @@ class ToDo extends Component {
         this.props.deleteToDo(id);
     }
 
+    handleEditToDo(){
+        this.state.showModal ? this.setState({showModal:false}): this.setState({showModal:true})
+        console.log(this.state.showModal)
+    }
+
     render() {
 
     var randomColor = "#"+((1<<24)*Math.random()|0).toString(16);
@@ -50,7 +58,7 @@ class ToDo extends Component {
             <CardContent>
                 <h4 className="todo-head">{this.props.item.name}
                 <DeleteIcon className="dlt-icon hide" style={{float:"right"}} fontSize="small" onClick={() => this.handleDeleteToDo(this.props.item._id)}></DeleteIcon> 
-                <EditIcon   className="edit-icon hide" style={{float:"right"}} fontSize="small" onClick={() =>this.handleEditToDo}></EditIcon>
+                <EditIcon   className="edit-icon hide" style={{float:"right"}} fontSize="small" onClick={this.handleEditToDo}></EditIcon>
                 </h4> 
                 <Typography paragraph className="todo-main">
                    {this.props.item.description}...
@@ -68,6 +76,7 @@ class ToDo extends Component {
             <CardActions>
             </CardActions>
         </Card>
+        {this.state.showModal ? <AddModal handleToggleModal={this.handleEditToDo} showModalOpen={true} item={this.props.item} />:""}
       </div>
     );
   }

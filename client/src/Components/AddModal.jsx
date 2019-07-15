@@ -10,12 +10,13 @@ class AddModal extends Component {
 
   constructor(props){
     super(props);
+    console.log(this.props,"AddModal")
     this.state ={
         open : this.props.showModalOpen,
         selectedDate : new Date('2014-08-18T21:11:54'),
-        name:'',
-        description:'',
-        targetdate:'',
+        name: this.props.item && this.props.item.name ||'',
+        description:this.props.item && this.props.item.description ||'',
+        targetdate:this.props.item && this.props.item.targetdate || '',
     }
     this.handleClose = this.handleClose.bind(this);
     this.handleChangeInput = this.handleChangeInput.bind(this);
@@ -56,7 +57,7 @@ class AddModal extends Component {
                   <form className="Form-Main" onChange={this.handleChangeInput}>
                             <FormControl margin="normal" required fullWidth>
                                 <InputLabel htmlFor="name">Name</InputLabel>
-                                <Input id="name"  name="name" value={this.state.name||''} autoComplete="name" type="text" autoFocus/>
+                                <Input id="name"  name="name" value={this.state.name||""} autoComplete="name" type="text" autoFocus/>
                             </FormControl>
         
                             <TextField
