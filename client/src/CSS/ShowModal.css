@@ -42,12 +42,12 @@
 
 .btn-cancel-modal{
     float: right;
-    margin: 20px
+    margin: 15px !important;
 }
 
 .btn-add-todo{
     float: right;
-    margin: 20px;
+    margin: 15px  !important;
 }
 
 .target-date{

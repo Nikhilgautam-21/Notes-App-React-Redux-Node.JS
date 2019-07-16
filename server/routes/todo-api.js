@@ -30,5 +30,13 @@ todoRouter.put("/update/:id",function(req,res){
     })
 })
 
+todoRouter.put("/update/completed/:id",function(req,res){
+    Todo.findByIdAndUpdate({_id:req.params.id},{completed:req.body},{new:true}).then(function(todo){
+        res.status(200).send(todo)
+    }).catch(function(err){
+        res.status(400).send(err)
+    })
+})
+
 
 module.exports = todoRouter;

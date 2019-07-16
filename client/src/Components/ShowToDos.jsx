@@ -44,7 +44,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
   return {
-    todos: state.todoReducers.todos
+    todos: state.todoReducer.todos
   }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(ShowToDos);

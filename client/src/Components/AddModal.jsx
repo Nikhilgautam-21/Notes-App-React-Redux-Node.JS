@@ -4,23 +4,22 @@ import '../CSS/ShowModal.css';
 import {FormControl, Input, InputLabel, TextField } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
-import {addToDo} from '../Actions/actionCreators';
+import {addToDo,updateToDo} from '../Actions/actionCreators';
 
 class AddModal extends Component {
 
   constructor(props){
     super(props);
-    console.log(this.props,"AddModal")
+    console.log(props)
     this.state ={
         open : this.props.showModalOpen,
-        selectedDate : new Date('2014-08-18T21:11:54'),
-        name: this.props.item && this.props.item.name ||'',
-        description:this.props.item && this.props.item.description ||'',
-        targetdate:this.props.item && this.props.item.targetdate || '',
+        name: (this.props.item && this.props.item.name) ||'',
+        description:(this.props.item && this.props.item.description) ||'',
+        targetdate:(this.props.item && this.props.item.targetdate) || '',
     }
     this.handleClose = this.handleClose.bind(this);
     this.handleChangeInput = this.handleChangeInput.bind(this);
-    this.handleAddToDo = this.handleAddToDo.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleClose(){
@@ -32,7 +31,7 @@ class AddModal extends Component {
     this.setState({[event.target.name]: event.target.value})
   }
 
-  handleAddToDo =(event)=>{
+  handleSubmit =(event)=>{
     event.preventDefault();
     const todo ={
       name : this.state.name,
@@ -40,10 +39,10 @@ class AddModal extends Component {
       targetdate: this.state.targetdate,
       completed: false
     }
-    this.props.addToDo(todo);
-    this.setState({name:'',description:'',targetdate: new Date('2014-08-18T21:11:54')})
+    this.props.showState === "edit"? this.props.updateToDo(this.props.item._id,todo) : this.props.addToDo(todo);
+    this.setState({name:'',description:'',targetdate: Date.now})
     this.handleClose();
-  } 
+  }
 
   render() {
     return (
@@ -54,6 +53,8 @@ class AddModal extends Component {
             onClose={this.handleClose}
             >
                 <div className="show-modal-body">
+                   {this.props.showState === "show" ? <p>bhag bc</p>:
+                <div> 
                   <form className="Form-Main" onChange={this.handleChangeInput}>
                             <FormControl margin="normal" required fullWidth>
                                 <InputLabel htmlFor="name">Name</InputLabel>
@@ -83,13 +84,14 @@ class AddModal extends Component {
                                       shrink: true,
                                     }}
                                     width ={1/2}
-                                    value ={this.state.targetdate || new Date('2014-08-18T21:11:54')}
+                                    value ={this.state.targetdate}
                                   />
                     </form>
                     <div className= "modal-btn-grp">
-                       <Button variant= "contained" color="primary" size = "small" className="btn-add-todo"  onClick={this.handleAddToDo}>Add</Button>
+                       <Button variant= "contained" color="primary" size = "small" className="btn-add-todo"  onClick={this.handleSubmit}>Submit</Button>
                        <Button variant= "outlined"  color="secondary" size = "small" className="btn-cancel-modal" onClick={this.handleClose}>Close</Button>
-                      </div>
+                    </div>
+                    </div>}
                 </div>
         </Modal>
     );
@@ -98,8 +100,8 @@ class AddModal extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-
     addToDo: (todo) => dispatch(addToDo(todo)),
+    updateToDo:(id,todo) => dispatch(updateToDo(id,todo))
   }
 }
 

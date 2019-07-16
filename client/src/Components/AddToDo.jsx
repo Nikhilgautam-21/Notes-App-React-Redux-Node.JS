@@ -35,7 +35,7 @@ class AddToDo extends Component {
           <AddIcon/>
         </Button>
         {
-          this.state.showModal ? <AddModal showModalOpen={true} handleToggleModal = {this.handleToggleModal} /> : ""
+          this.state.showModal ? <AddModal showModalOpen={true} handleToggleModal = {this.handleToggleModal} showState="add" /> : ""
         }
       </div>
     );
